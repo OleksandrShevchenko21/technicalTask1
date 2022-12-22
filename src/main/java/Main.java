@@ -11,7 +11,9 @@ import java.util.List;
 import java.util.Scanner;
 
 import static model.Solution.*;
-
+/*  Щоб наповнити таблицю об'єктами треба після першого запуску в hibernate.cfg.xml
+    <property name="hibernate.hbm2ddl.auto">create</property>
+    замінити create на update*/
 public class Main {
     public static void main(String[] args) {
 
@@ -36,21 +38,21 @@ public class Main {
         List<Solution.Element> elements = textAnalyze(expression);
         Solution.ElementBuffer elementBuffer = new Solution.ElementBuffer(elements);
         double result = expr(elementBuffer);
-        int qty = quantityOfNumbers(expression);;
+        int qty = quantityOfNumbers(expression);
         System.out.println("Quantity of numbers in expression: " + qty);
-        System.out.println(result);
+        System.out.println("Result: " + result);
 
 //---------------------------------------------------------------------------------------------
 
         session.save(new Calculator(result, expression,qty));
         session.beginTransaction();
 
-        System.out.print("Enter results of expression less or equal your number: ");
+        System.out.print("Enter the number. You will get the list of expressions where results are less or equal this number: ");
         int expressionEqualThisNumber = new Scanner(System.in).nextInt();
 
-        List<Calculator> allExpressionLessOrEqualThisNumber =
+        List<Calculator> allResultsOfExpressionLessOrEqualThisNumber =
                 session.createQuery("select r from Calculator r where r.result <= " +expressionEqualThisNumber,Calculator.class).list();
-        for ( var filteredResult:allExpressionLessOrEqualThisNumber)
+        for ( var filteredResult:allResultsOfExpressionLessOrEqualThisNumber)
             System.out.println(filteredResult);
 
         session.close();

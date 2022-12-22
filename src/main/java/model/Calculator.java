@@ -23,7 +23,6 @@ public class Calculator {
     @Column (name = "numbers_quantity")
     private int qty;
 
-
     public Calculator(double result, String expression, int qty) {
         this.result = result;
         this.expression = expression;
